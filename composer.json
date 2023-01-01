@@ -1,0 +1,22 @@
+
+
+
+
+{
+    "name": "shevy/manao.by",
+
+    "authors": [
+        {
+            "name": "Francis",
+            "email": "shevy2k2@yahoo.com"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "app\\" : "./"
+        }
+    },
+
+    "require": {}
+}
