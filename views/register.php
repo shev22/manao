@@ -7,39 +7,39 @@
     <div class="card-body">
 
 
+              <div id="success" ></div>
+
         <form action="" method="post">
         <div class="mb-3 " >
           
                 <label for="exampleInputEmail1" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp">
                 <div id="name_error" class="form-text text-danger"></div>
-                <?php  //$model->geterrors('name'); ?> 
             </div>
 
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
-                <?php //echo $model->geterrors('email'); ?>
+
                 <div id="email_error" class="form-text text-danger"></div>
                
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Login</label>
                 <input type="text" class="form-control" id="login" name="login" aria-describedby="loginHelp">
-                <?php // echo $model->geterrors('login'); ?>
+
                 <div id="login_error" class="form-text text-danger"></div>
             </div>
            
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password">
-                <?php //echo $model->geterrors('password'); ?>
+
                 <div id="password_error" class="form-text text-danger"></div>
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">confirm Password</label>
                 <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-                <?php // echo $model->geterrors('confirm_password'); ?>
                 <div id="confirm_password_error" class="form-text text-danger"></div>
             </div>
          
@@ -71,48 +71,52 @@ $(document).ready(function () {
       dataType: "json",
       encode: true,
     }).done(function (errors) {
-      console.log(errors);
+      console.log(errors.message);
 
       if (errors.name) { 
-      $("#name").addClass("is-invalid");
+      $("#name").addClass(" is-invalid");
           $("#name_error").text(errors.name );
       }else{
-        $("#name").removeClass("is-invalid");
+        $("#name").attr('class', 'form-control is-valid');
         $("#name_error").text('');
       }
       if (errors.email) { 
       $("#email").addClass("is-invalid");
           $("#email_error").text(errors.email );
       }else{
-        $("#email").removeClass("is-invalid");
+        $("#email").attr('class', 'form-control is-valid');
         $("#email_error").text('');
       }
       if (errors.login) { 
       $("#login").addClass("is-invalid");
           $("#login_error").text(errors.login );
       }else{
-        $("#login").removeClass("is-invalid");
+        $("#login").attr('class', 'form-control is-valid');
         $("#login_error").text('');
       }
       if (errors.password) { 
       $("#password").addClass("is-invalid");
           $("#password_error").text(errors.password );
       }else{
-        $("#password").removeClass("is-invalid");
+        $("#password").attr('class', 'form-control is-valid');
         $("#password_error").text('');
       }
       if (errors.confirm_password) { 
       $("#confirm_password").addClass("is-invalid");
           $("#confirm_password_error").text(errors.confirm_password );
       }else{
-        $("#confirm_password").removeClass("is-invalid");
+        $("#confirm_password").attr('class', 'form-control is-valid');
         $("#confirm_password_error").text('');
       }
-    });
 
- 
+      
+        $("#success").html(
+          '<div class="alert alert-success"><h4>' + errors.message + "</h4></div>");
+   
 
+     });
 
+   
     event.preventDefault();
   }); 
 }); 

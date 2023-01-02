@@ -7,26 +7,22 @@ use app\core\Controller;
 use app\core\Application;
 use app\models\RegisterModel;
 
-class SiteController 
+class SiteController
 {
-
     public function index()
     {
-       
-        return  Application::$app->router->renderView('index');
+        return Application::$app->router->renderView('index');
     }
 
     public function login()
     {
-       
-        return  Application::$app->router->renderView('login');
+        return Application::$app->router->renderView('login');
     }
 
     public function register()
     {
-       // $registerModel = new RegisterModel;
-       
-        return  Application::$app->router->renderView('register');
+        // $registerModel = new RegisterModel;
+
+        return Application::$app->router->renderView('register');
     }
-  
 }

@@ -13,17 +13,18 @@ class Request
             return $path;
         }
 
-        return substr($path, 0, $position);  //return url before "?"
+        return substr($path, 0, $position); //return url before "?"
     }
 
-    
-    public function method()  // get request method *(GET / POST)
+    public function method()
     {
-        return strtolower($_SERVER['REQUEST_METHOD']);  
+        // get request method *(GET / POST)
+        return strtolower($_SERVER['REQUEST_METHOD']);
     }
 
-    public function getData()   // Sanitize special chars from GET and POST request 
+    public function getData()
     {
+        // Sanitize special chars from GET and POST request
         $data = [];
 
         if ($this->method() === 'get') {
@@ -45,8 +46,7 @@ class Request
                 );
             }
         }
-      //  var_dump( $data );
+        //  var_dump( $data );
         return $data;
     }
-
 }
