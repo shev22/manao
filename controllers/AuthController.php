@@ -5,24 +5,51 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Controller;
 use app\core\Application;
+use app\core\LoginForm;
 use app\models\User;
 
 class AuthController
 {
+    public static Array $data;
+
+
     public function login()
     {
-        // $data = Application::$app->request->getData();
+      
+        $loginForm = new LoginForm;
+        $loginForm->loadData(Application::$app->request->getData());
+        if ($loginForm->validate() && $loginForm->login()) {
+          
+        self::$data['success'] = true;
+        self::$data['message'] = 'Success!';
+
+        } else {
+        self::$data['success'] = false;
+        self::$data['errors'] = $loginForm->errors;
+    
+        }
+       echo json_encode( self::$data); 
+      
     }
+    
 
     public function register()
     {
-        $User = new User();
-        $User->loadData(Application::$app->request->getData());
-
-        if ($User->validate()) {
-            $User->register();
+        $user = new User();
+        $user->loadData(Application::$app->request->getData());
+        if ($user->validate() && $user->register()) {
+           
+        
+             self::$data['success'] = true;
+             self::$data['message'] = 'Success!';
+                    
+          
         } else {
-            echo json_encode($User->errors);
+
+            self::$data['success'] = false;
+            self::$data['errors'] = $user->errors;
+           
         }
+        echo json_encode( self::$data); 
     }
 }

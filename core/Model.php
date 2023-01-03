@@ -8,10 +8,11 @@ abstract class Model
     public const RULE_EMAIL = 'email';
     public const RULE_MIN = 'min';
     public const RULE_MATCH = 'match';
-    public const RULE_EXISTS = 'exists';
+    public const RULE_UNIQUE = 'exists';
     public const RULE_ALPHA_NUMERICAL = 'alpha_numerical';
     public const RULE_ALPHABETICAL = 'alphabetical';
-
+    public $jsonStorage;
+    public $stored_users = [];
     public array $errors = [];
 
     public function loadData($data)
@@ -24,17 +25,16 @@ abstract class Model
         }
     }
 
-    public function userExists()
+    public function setjsonData()
     {
-        $users = json_decode(
-            file_get_contents(__DIR__ . '/../data.json'),
+        $this->jsonStorage = __DIR__.'/../data.json';
+        $this->stored_users = json_decode(
+            file_get_contents( $this->jsonStorage ),
             true
         );
-        foreach ($users as $user) {
-            return $user;
-        }
     }
 
+ 
     abstract public function rules(): array;
 
     public function validate()
@@ -49,54 +49,50 @@ abstract class Model
                 }
 
                 if ($ruleName === self::RULE_REQUIRED && !$value) {
-                    $this->addError($attribute, self::RULE_REQUIRED);
+                    $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                 }
                 if (
                     $ruleName === self::RULE_EMAIL &&
                     !filter_var($value, FILTER_VALIDATE_EMAIL)
                 ) {
-                    $this->addError($attribute, self::RULE_EMAIL);
+                    $this->addErrorForRule($attribute, self::RULE_EMAIL);
                 }
                 if (
                     $ruleName === self::RULE_ALPHA_NUMERICAL &&
                     !preg_match('/^\S*(?=\S*[\d])(?=\S*[a-z])\S*$/', $value)
                 ) {
-                    $this->addError($attribute, self::RULE_ALPHA_NUMERICAL);
+                    $this->addErrorForRule($attribute, self::RULE_ALPHA_NUMERICAL);
                 }
                 if (
                     $ruleName === self::RULE_ALPHABETICAL &&
                     !preg_match('/^[a-zA-Z ]+$/', $value)
                 ) {
-                    $this->addError($attribute, self::RULE_ALPHABETICAL);
+                    $this->addErrorForRule($attribute, self::RULE_ALPHABETICAL);
                 }
                 if (
-                    $ruleName === self::RULE_EXISTS && $this->userExists()
-                        ? $value === $this->userExists()['email'] ||
-                            ($ruleName === self::RULE_EXISTS &&
-                                $value === $this->userExists()['login'])
-                        : ''
-                ) {
-                    $this->addError($attribute, self::RULE_EXISTS);
+                    $ruleName === self::RULE_UNIQUE && in_array($value, []) ) 
+                    {
+                    $this->addErrorForRule($attribute, self::RULE_UNIQUE);
                 }
 
                 if (
                     $ruleName === self::RULE_MIN &&
                     strlen($value) < $rule['min']
                 ) {
-                    $this->addError($attribute, self::RULE_MIN, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MIN, $rule);
                 }
                 if (
                     $ruleName === self::RULE_MATCH &&
                     $value !== $this->{$rule['match']}
                 ) {
-                    $this->addError($attribute, self::RULE_MATCH, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
                 }
-            }
+            } 
         }
         return empty($this->errors);
     }
 
-    public function addError($attribute, $rule, $params = [])
+    private function addErrorForRule($attribute, $rule, $params = [])
     {
         $message = $this->errorMessages()[$rule] ?? '';
 
@@ -106,17 +102,27 @@ abstract class Model
         $this->errors[$attribute][] = $message;
     }
 
+
+    public function addError($attribute, $message)
+    {
+      
+        $this->errors[$attribute][] = $message;
+      // var_dump( $this->errors);
+    }
+
     public function errorMessages()
     {
         return [
             self::RULE_REQUIRED => 'This is a required field',
             self::RULE_EMAIL => 'This field must be a vaild email address',
             self::RULE_MIN => ' Min lenght must be {min}',
-            self::RULE_EXISTS => 'A user with this detail already exists',
+            self::RULE_UNIQUE => 'A user with this detail already exists',
             self::RULE_ALPHA_NUMERICAL =>
                 '  Must contain both alphabets and numbers',
             self::RULE_ALPHABETICAL => ' Must contain only alphabets',
             self::RULE_MATCH => 'Must match with the password field',
+            'login' => ' No registered users with this login',
+            'password' => 'Password is incorrect',
         ];
     }
 

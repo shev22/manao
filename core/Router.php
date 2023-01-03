@@ -3,11 +3,14 @@ namespace app\core;
 
 class Router
 {
+    public $request;
+    public $response;
     protected array $routes = [];
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
+        $this->response = $response;
     }
 
     public function get($path, $callback)
@@ -31,7 +34,9 @@ class Router
         //  echo   '<pre>';
 
         if ($callback === false) {
-            return 'not found';
+           Application::$app->response->setStatusCode(404);
+           return $this->renderView('_404');
+            exit;
         }
         if (is_string($callback)) {
             return $this->renderView($callback);

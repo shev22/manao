@@ -21,8 +21,17 @@ class SiteController
 
     public function register()
     {
-        // $registerModel = new RegisterModel;
-
         return Application::$app->router->renderView('register');
+    }
+
+    public function logout()
+    {
+       Application::$app->logout();
+       Application::$app->response->redirect('/');
+    }
+
+    public function welcome()
+    {
+        return Application::$app->router->renderView('welcome');
     }
 }

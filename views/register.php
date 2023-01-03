@@ -3,11 +3,7 @@
 <div class="card">
     <div class="card-header">
         <h2>Create an account</h2>
-    </div>
     <div class="card-body">
-
-
-              <div id="success" ></div>
 
         <form action="" method="post">
         <div class="mb-3 " >
@@ -70,53 +66,55 @@ $(document).ready(function () {
       data: formData,
       dataType: "json",
       encode: true,
-    }).done(function (errors) {
-      console.log(errors.message);
+    }).done(function (data) {
+      console.log(data.errors);
 
-      if (errors.name) { 
+if (!data.success)
+{
+      if (data.errors.name) { 
       $("#name").addClass(" is-invalid");
-          $("#name_error").text(errors.name );
+          $("#name_error").text(data.errors.name );
       }else{
         $("#name").attr('class', 'form-control is-valid');
         $("#name_error").text('');
       }
-      if (errors.email) { 
+      if (data.errors.email) { 
       $("#email").addClass("is-invalid");
-          $("#email_error").text(errors.email );
+          $("#email_error").text(data.errors.email );
       }else{
         $("#email").attr('class', 'form-control is-valid');
         $("#email_error").text('');
       }
-      if (errors.login) { 
+      if (data.errors.login) { 
       $("#login").addClass("is-invalid");
-          $("#login_error").text(errors.login );
+          $("#login_error").text(data.errors.login );
       }else{
         $("#login").attr('class', 'form-control is-valid');
         $("#login_error").text('');
       }
-      if (errors.password) { 
+      if (data.errors.password) { 
       $("#password").addClass("is-invalid");
-          $("#password_error").text(errors.password );
+          $("#password_error").text(data.errors.password );
       }else{
         $("#password").attr('class', 'form-control is-valid');
         $("#password_error").text('');
       }
-      if (errors.confirm_password) { 
+      if (data.errors.confirm_password) { 
       $("#confirm_password").addClass("is-invalid");
-          $("#confirm_password_error").text(errors.confirm_password );
+          $("#confirm_password_error").text(data.errors.confirm_password );
       }else{
         $("#confirm_password").attr('class', 'form-control is-valid');
         $("#confirm_password_error").text('');
       }
 
-      
-        $("#success").html(
-          '<div class="alert alert-success"><h4>' + errors.message + "</h4></div>");
-   
-
+      // if( data.errors.message){
+      //    $("#success").html(
+      //     '<div class="alert alert-success"><h4>' + data.errors.message + "</h4></div>");
+      // }
+}else{
+      window.location.href = "/welcome";
+     }
      });
-
-   
     event.preventDefault();
   }); 
 }); 
