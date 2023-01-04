@@ -1,23 +1,14 @@
 [
     {
-        "id": "06931",
+        "id": "64317",
         "name": "Francis Okoroafor",
-        "email": "shevy2k2@yahoo.com",
         "login": "shevy2k2",
-        "password": "$2y$10$BXdXI76wwVBNQI2FhQ3iz.V0jDToM.LvxGuwTRgghQMnbuzqr58Hu"
+        "password": "$2y$10$XTxLZZlc7JLkQFQwGbrrV.1fHQ3LkPYG74bTPk56XXmKRN7hCPzce"
     },
     {
-        "id": "67394",
-        "name": "Antonina Reznikov",
-        "email": "74areznikov@gmail.com",
-        "login": "74areznikov",
-        "password": "$2y$10$DF0A7JLDQ5P1i1laM.zfYu878wBzCadwkPhUbXbEWZKTdsj96ua0i"
-    },
-    {
-        "id": "74826",
+        "id": "53849",
         "name": "John Okoroafor",
-        "email": "shevy2k2@yahoo.com",
         "login": "john.okoroafor",
-        "password": "$2y$10$jG434qg8KYr3.szMzWwvkOwvQfsrH25YgVlAGs3Vvors4RkAsZALa"
+        "password": "$2y$10$fGQsnCK3GCWIcLyhmjZhXufGQiZdJMaELI\/NXS93WeQEwcASfR2R2"
     }
 ]

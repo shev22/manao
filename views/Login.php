@@ -8,7 +8,21 @@
 <div class="card">
     <div class="card-header">
         <h2>Login</h2>
-    </div>
+        <?php
+        use app\core\Application;
+
+         
+     
+        if (Application::$app->session->getFlash('warning')): ?>
+        <div class="alert alert-danger">
+        <?php echo Application::$app->session->getFlash('warning'); ?>
+          </div>
+        <?php endif;
+        ?>
+        
+
+        <div id="success"></div>
+    
     <div class="card-body">
 
 
@@ -25,65 +39,10 @@
                 <div id="password_error" class="form-text text-danger"></div>
             </div>
          
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary login">Submit</button>
         </form>
     </div>
 </div>
     </div>
 
 
-
-
-
-
-
-
-
-
-    <script>
-
-
-$(document).ready(function () {
-  $("form").submit(function (event) {
-    
-    var formData = {
-      
-      login: $("#login").val(),
-      password: $("#password").val(),
-  
-   
-    };
-
-    $.ajax({
-      type: "POST",
-      url: "/login",
-      data: formData,
-      dataType: "json",
-      encode: true,
-    }).done(function (data) {
-     
-      if (!data.success) {
-       if (data.errors.login) { 
-      $("#login").addClass("is-invalid");
-          $("#login_error").text(data.errors.login );
-      }else{
-        $("#login").attr('class', 'form-control is-valid');
-        $("#login_error").text('');
-      }
-      if (data.errors.password) { 
-      $("#password").addClass("is-invalid");
-          $("#password_error").text(data.errors.password );
-      }else{
-        $("#password").attr('class', 'form-control is-valid');
-        $("#password_error").text('');
-      }
-    } else {
-        window.location.href = "/welcome";
-      }
-   
-    });
-
-    event.preventDefault();
-  });
-});
-    </script> 

@@ -5,7 +5,7 @@ namespace app\core;
 abstract class Model
 {
     public const RULE_REQUIRED = 'required';
-    public const RULE_EMAIL = 'email';
+    //  public const RULE_EMAIL = 'email';
     public const RULE_MIN = 'min';
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'exists';
@@ -27,14 +27,24 @@ abstract class Model
 
     public function setjsonData()
     {
-        $this->jsonStorage = __DIR__.'/../data.json';
+        $this->jsonStorage = __DIR__ . '/../data.json';
         $this->stored_users = json_decode(
-            file_get_contents( $this->jsonStorage ),
+            file_get_contents($this->jsonStorage),
             true
         );
     }
 
- 
+    public function isUserUnique(array $array, string $user)
+    {
+        foreach ($array as $value) {
+            if ($user == $value['login']) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     abstract public function rules(): array;
 
     public function validate()
@@ -42,26 +52,26 @@ abstract class Model
         foreach ($this->rules() as $attribute => $rules) {
             $value = $this->{$attribute};
 
+            //var_dump(  $value );
+
             foreach ($rules as $rule) {
                 $ruleName = $rule;
                 if (!is_string($ruleName)) {
                     $ruleName = $rule[0];
                 }
-
+                // var_dump($ruleName);
                 if ($ruleName === self::RULE_REQUIRED && !$value) {
                     $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                 }
-                if (
-                    $ruleName === self::RULE_EMAIL &&
-                    !filter_var($value, FILTER_VALIDATE_EMAIL)
-                ) {
-                    $this->addErrorForRule($attribute, self::RULE_EMAIL);
-                }
+
                 if (
                     $ruleName === self::RULE_ALPHA_NUMERICAL &&
                     !preg_match('/^\S*(?=\S*[\d])(?=\S*[a-z])\S*$/', $value)
                 ) {
-                    $this->addErrorForRule($attribute, self::RULE_ALPHA_NUMERICAL);
+                    $this->addErrorForRule(
+                        $attribute,
+                        self::RULE_ALPHA_NUMERICAL
+                    );
                 }
                 if (
                     $ruleName === self::RULE_ALPHABETICAL &&
@@ -70,9 +80,25 @@ abstract class Model
                     $this->addErrorForRule($attribute, self::RULE_ALPHABETICAL);
                 }
                 if (
-                    $ruleName === self::RULE_UNIQUE && in_array($value, []) ) 
-                    {
+                    $ruleName === self::RULE_UNIQUE &&
+                    $this->isUserUnique(
+                        $this->stored_users,
+                        $this->{$rule['value']}
+                    )
+                ) {
                     $this->addErrorForRule($attribute, self::RULE_UNIQUE);
+                }
+
+                if ($ruleName === self::RULE_UNIQUE) {
+                    $this->setjsonData();
+                    if (
+                        $this->isUserUnique(
+                            $this->stored_users,
+                            $this->{$rule['value']}
+                        )
+                    ) {
+                        $this->addErrorForRule($attribute, self::RULE_UNIQUE);
+                    }
                 }
 
                 if (
@@ -87,8 +113,9 @@ abstract class Model
                 ) {
                     $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
                 }
-            } 
+            }
         }
+
         return empty($this->errors);
     }
 
@@ -102,19 +129,17 @@ abstract class Model
         $this->errors[$attribute][] = $message;
     }
 
-
     public function addError($attribute, $message)
     {
-      
         $this->errors[$attribute][] = $message;
-      // var_dump( $this->errors);
+        // var_dump( $this->errors);
     }
 
     public function errorMessages()
     {
         return [
             self::RULE_REQUIRED => 'This is a required field',
-            self::RULE_EMAIL => 'This field must be a vaild email address',
+            // self::RULE_EMAIL => 'This field must be a vaild email address',
             self::RULE_MIN => ' Min lenght must be {min}',
             self::RULE_UNIQUE => 'A user with this detail already exists',
             self::RULE_ALPHA_NUMERICAL =>

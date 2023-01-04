@@ -3,8 +3,9 @@ namespace app\core;
 
 class Router
 {
-    public $request;
-    public $response;
+    public  $title;
+    public Request $request;
+    public Response $response;
     protected array $routes = [];
 
     public function __construct(Request $request, Response $response)
@@ -49,7 +50,6 @@ class Router
     {
         $layoutContent = $this->layoutContent();
         $viewContent = $this->renderOnlyView($view, $params);
-
         return str_replace('{{content}}', $viewContent, $layoutContent);
         //include_once Application::$ROOT_DIR."/views/$view.php";
     }

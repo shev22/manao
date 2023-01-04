@@ -21,7 +21,7 @@ class AuthController
         if ($loginForm->validate() && $loginForm->login()) {
           
         self::$data['success'] = true;
-        self::$data['message'] = 'Success!';
+        self::$data['message'] = 'Please wait...!';
 
         } else {
         self::$data['success'] = false;
@@ -41,7 +41,7 @@ class AuthController
            
         
              self::$data['success'] = true;
-             self::$data['message'] = 'Success!';
+             self::$data['message'] = 'Registering...';
                     
           
         } else {
@@ -52,4 +52,12 @@ class AuthController
         }
         echo json_encode( self::$data); 
     }
+
+    public function logout()
+    {
+       Application::$app->logout();
+       Application::$app->response->redirect('/');
+    }
+
+   
 }

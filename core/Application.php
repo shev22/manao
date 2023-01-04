@@ -1,11 +1,13 @@
 <?php
 namespace app\core;
 
+use app\core\View;
 use app\models\User;
 use app\core\Response;
 
 class Application
 {
+  
     public ?array $user;
     public Router $router;
     public Request $request;
@@ -17,7 +19,6 @@ class Application
     public function __construct($config)
     {
         self::$app = $this;
-
         $this->request = new Request();
         $this->session = new Session();
         $this->response = new Response();
