@@ -15,11 +15,23 @@ class SiteController
         return Application::$app->router->renderView('index');
     }
 
+    public function about()
+    {
+        Application::$app->router->title = 'About';
+        return Application::$app->router->renderView('about');
+    }
+
+    public function services()
+    {
+        Application::$app->router->title = 'services';
+        return Application::$app->router->renderView('services');
+    }
+
     public function login()
     {
         Application::$app->router->title = 'Login';
         if (Application::$app->user) {
-            Application::$app->response->redirect('/');        
+            Application::$app->response->redirect('/');
         }
         return Application::$app->router->renderView('login');
     }
@@ -41,7 +53,7 @@ class SiteController
         if (Application::$app->user) {
             return Application::$app->router->renderView('welcome');
         }
-       
+
         Application::$app->response->redirect('login');
         Application::$app->session->setFlash('warning', 'Please Login to access this Page');
     }
@@ -53,5 +65,6 @@ class SiteController
             return Application::$app->router->renderView('profile');
         }
         Application::$app->response->redirect('login');
+        Application::$app->session->setFlash('warning', 'Please Login to access this Page');
     }
 }

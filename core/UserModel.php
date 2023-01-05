@@ -20,7 +20,6 @@ abstract class UserModel extends Model
                 json_encode($this->stored_users, JSON_PRETTY_PRINT, LOCK_EX)
             )
         ) {
-            
             return Application::$app->login($attributes);
         }
     }

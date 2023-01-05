@@ -1,4 +1,5 @@
 <?php
+
 namespace app\core;
 
 use app\core\View;
@@ -7,9 +8,10 @@ use app\core\Response;
 
 class Application
 {
-  
+
     public ?array $user;
     public Router $router;
+    public Cookie $cookie;
     public Request $request;
     public Session $session;
     public string $userClass;
@@ -19,6 +21,7 @@ class Application
     public function __construct($config)
     {
         self::$app = $this;
+        $this->cookie = new cookie();
         $this->request = new Request();
         $this->session = new Session();
         $this->response = new Response();
@@ -41,16 +44,17 @@ class Application
 
     public function login(array $user)
     {
-        // create a session for logged in user
+        
         $this->user = $user;
         $userId = $user['id'];
         $this->session->set('user', $userId);
+        $this->cookie->setCookie('user', $userId);
         return true;
     }
 
     public function logout()
     {
-        //$this->user = null;
+        $this->user = null;
         $this->session->remove('user');
     }
 }

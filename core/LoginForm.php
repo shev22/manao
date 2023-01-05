@@ -12,9 +12,9 @@ class LoginForm extends Model
     public function rules(): array
     {
         return [
-                   'login' => [self::RULE_REQUIRED],
-                     'password' => [self::RULE_REQUIRED],
-            ];
+            'login' => [self::RULE_REQUIRED],
+            'password' => [self::RULE_REQUIRED],
+        ];
     }
 
     public function login()
@@ -24,19 +24,15 @@ class LoginForm extends Model
         foreach ($this->stored_users as $value) {
             if ($this->login == $value['login']) {
                 if (password_verify($this->password, $value['password'])) {
-                            $user = $value;
-                         return Application::$app->login( $user);
-                        //return true;
-                }else{
+                    $user = $value;
+                    return Application::$app->login($user);
+                    //return true;
+                } else {
                     $this->addError('password', $this->errorMessages()['password']);
                     return false;
                 }
             }
         }
-         $this->addError('login', $this->errorMessages()['login']);
-     
+        $this->addError('login', $this->errorMessages()['login']);
     }
-
-
-
 }

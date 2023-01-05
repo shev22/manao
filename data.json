@@ -1,14 +1,20 @@
 [
     {
-        "id": "64317",
+        "id": "48516",
         "name": "Francis Okoroafor",
         "login": "shevy2k2",
-        "password": "$2y$10$XTxLZZlc7JLkQFQwGbrrV.1fHQ3LkPYG74bTPk56XXmKRN7hCPzce"
+        "password": "$2y$10$hZj\/XD8lqFN.gk8EBhjQZu1aWG2QbUdAMV0gUquYfPcxNczC0EVcC"
     },
     {
-        "id": "53849",
-        "name": "John Okoroafor",
+        "id": "49612",
+        "name": "john Okoroafor",
         "login": "john.okoroafor",
-        "password": "$2y$10$fGQsnCK3GCWIcLyhmjZhXufGQiZdJMaELI\/NXS93WeQEwcASfR2R2"
+        "password": "$2y$10$v2u2Gd7RyGRXiJl8d6ncJerHXXwUJTVt5gYNyOseSwt3xVmkm6SNy"
+    },
+    {
+        "id": "38457",
+        "name": "Antonina Reznikov",
+        "login": "Antonina",
+        "password": "$2y$10$6fA3jvu9.xWnOb0Z\/BrYU.tABoS1DQFm5Cpd\/s\/unLBm56UA3pgyS"
     }
 ]

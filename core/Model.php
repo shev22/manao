@@ -143,7 +143,7 @@ abstract class Model
             self::RULE_MIN => ' Min lenght must be {min}',
             self::RULE_UNIQUE => 'A user with this detail already exists',
             self::RULE_ALPHA_NUMERICAL =>
-                '  Must contain both alphabets and numbers',
+            '  Must contain both alphabets and numbers',
             self::RULE_ALPHABETICAL => ' Must contain only alphabets',
             self::RULE_MATCH => 'Must match with the password field',
             'login' => ' No registered users with this login',

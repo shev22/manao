@@ -1,4 +1,5 @@
 <?php
+
 namespace app\core;
 
 class Router
@@ -35,8 +36,8 @@ class Router
         //  echo   '<pre>';
 
         if ($callback === false) {
-           Application::$app->response->setStatusCode(404);
-           return $this->renderView('_404');
+            Application::$app->response->setStatusCode(404);
+            return $this->renderView('_404');
             exit;
         }
         if (is_string($callback)) {
