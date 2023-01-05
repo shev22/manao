@@ -23,7 +23,7 @@ use app\core\Application; ?>
     <div class="container d-flex justify-content-between align-items-center">
 
       <div class="logo">
-        <h1 class="text-light"><a href="/"><span>Manao</span></a></h1>
+        <h1 class="text-light"><a href="/"><b><span>Manao</span></b></a></h1>
       </div>
       <nav id="navbar" class="navbar">
         <ul>
