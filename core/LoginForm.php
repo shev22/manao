@@ -12,8 +12,8 @@ class LoginForm extends Model
     public function rules(): array
     {
         return [
-            'login' => [self::RULE_REQUIRED],
-            'password' => [self::RULE_REQUIRED],
+            'login' => [self::RULE_REQUIRED, self::RULE_SPACES],
+            'password' => [self::RULE_REQUIRED, self::RULE_SPACES],
         ];
     }
 
@@ -28,7 +28,10 @@ class LoginForm extends Model
                     return Application::$app->login($user);
                     //return true;
                 } else {
-                    $this->addError('password', $this->errorMessages()['password']);
+                    $this->addError(
+                        'password',
+                        $this->errorMessages()['password']
+                    );
                     return false;
                 }
             }

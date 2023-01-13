@@ -5,7 +5,8 @@ namespace app\core;
 abstract class Model
 {
     public const RULE_REQUIRED = 'required';
-    //  public const RULE_EMAIL = 'email';
+    public const RULE_EMAIL = 'email';
+    public const RULE_SPACES = 'spaces';
     public const RULE_MIN = 'min';
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'exists';
@@ -14,6 +15,8 @@ abstract class Model
     public $jsonStorage;
     public $stored_users = [];
     public array $errors = [];
+
+    abstract public function rules(): array;
 
     public function loadData($data)
     {
@@ -25,7 +28,7 @@ abstract class Model
         }
     }
 
-    public function setjsonData()
+    protected function setjsonData()
     {
         $this->jsonStorage = __DIR__ . '/../data.json';
         $this->stored_users = json_decode(
@@ -34,18 +37,15 @@ abstract class Model
         );
     }
 
-    public function isUserUnique(array $array, string $user)
+    private function doesUserExist()
     {
-        foreach ($array as $value) {
-            if ($user == $value['login']) {
-                return true;
-            } else {
-                return false;
-            }
+        $users = [];
+        foreach ($this->stored_users as $value) {
+            array_push($users, $value['login'], $value['email']);
         }
-    }
 
-    abstract public function rules(): array;
+        return $users;
+    }
 
     public function validate()
     {
@@ -62,42 +62,51 @@ abstract class Model
                 // var_dump($ruleName);
                 if ($ruleName === self::RULE_REQUIRED && !$value) {
                     $this->addErrorForRule($attribute, self::RULE_REQUIRED);
+                    break;
+                }
+                if (
+                    $ruleName === self::RULE_EMAIL &&
+                    !filter_var($value, FILTER_VALIDATE_EMAIL)
+                ) {
+                    $this->addErrorForRule($attribute, self::RULE_EMAIL);
+                    break;
+                }
+                if (
+                    $ruleName === self::RULE_SPACES &&
+                    preg_match('/\\s/', $value)
+                ) {
+                    $this->addErrorForRule($attribute, self::RULE_SPACES);
+                    break;
                 }
 
                 if (
                     $ruleName === self::RULE_ALPHA_NUMERICAL &&
-                    !preg_match('/^\S*(?=\S*[\d])(?=\S*[a-z])\S*$/', $value)
+                    !preg_match('/(?=.*[a-zA-Z])(?=.*[0-9])(?!.*\W)/', $value)
                 ) {
                     $this->addErrorForRule(
                         $attribute,
                         self::RULE_ALPHA_NUMERICAL
                     );
+                    break;
                 }
                 if (
                     $ruleName === self::RULE_ALPHABETICAL &&
-                    !preg_match('/^[a-zA-Z ]+$/', $value)
+                    !preg_match('/(?=.*[a-zA-Z])(?!.*[0-9])(?!.*\W)/', $value)
                 ) {
                     $this->addErrorForRule($attribute, self::RULE_ALPHABETICAL);
-                }
-                if (
-                    $ruleName === self::RULE_UNIQUE &&
-                    $this->isUserUnique(
-                        $this->stored_users,
-                        $this->{$rule['value']}
-                    )
-                ) {
-                    $this->addErrorForRule($attribute, self::RULE_UNIQUE);
+                    break;
                 }
 
                 if ($ruleName === self::RULE_UNIQUE) {
                     $this->setjsonData();
                     if (
-                        $this->isUserUnique(
-                            $this->stored_users,
-                            $this->{$rule['value']}
+                        in_array(
+                            $this->{$rule['value']},
+                            $this->doesUserExist()
                         )
                     ) {
                         $this->addErrorForRule($attribute, self::RULE_UNIQUE);
+                        break;
                     }
                 }
 
@@ -106,12 +115,14 @@ abstract class Model
                     strlen($value) < $rule['min']
                 ) {
                     $this->addErrorForRule($attribute, self::RULE_MIN, $rule);
+                    break;
                 }
                 if (
                     $ruleName === self::RULE_MATCH &&
                     $value !== $this->{$rule['match']}
                 ) {
                     $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
+                    break;
                 }
             }
         }
@@ -139,11 +150,12 @@ abstract class Model
     {
         return [
             self::RULE_REQUIRED => 'This is a required field',
-            // self::RULE_EMAIL => 'This field must be a vaild email address',
+            self::RULE_EMAIL => 'This field must be a vaild email address',
             self::RULE_MIN => ' Min lenght must be {min}',
             self::RULE_UNIQUE => 'A user with this detail already exists',
+            self::RULE_SPACES => 'Spaces and special chars are not allowed',
             self::RULE_ALPHA_NUMERICAL =>
-            '  Must contain both alphabets and numbers',
+                '  Must contain alphabets and numbers',
             self::RULE_ALPHABETICAL => ' Must contain only alphabets',
             self::RULE_MATCH => 'Must match with the password field',
             'login' => ' No registered users with this login',
@@ -151,47 +163,47 @@ abstract class Model
         ];
     }
 
-    public function geterrors($attribute)
-    {
-        //     $errors = [];
-        //     foreach ($this->errors as $key => $value) {
-        //         if ($key == $attribute) {
-        //             array_push($errors, $value);
-        //         }
-        //     }
+    // public function geterrors($attribute)
+    // {
+    //     $errors = [];
+    //     foreach ($this->errors as $key => $value) {
+    //         if ($key == $attribute) {
+    //             array_push($errors, $value);
+    //         }
+    //     }
 
-        //    // var_dump($errors);
+    //    // var_dump($errors);
 
-        //     if( $errors)
-        //     {
-        //      foreach ($this->rules() as $k => $rules) {
-        //         foreach ($rules as $rule) {
-        //             $ruleName = $rule;
-        //             if (!is_string($ruleName)) {
-        //                 $this->ruleName = $rule[0];
-        //             }
-        //             switch ($ruleName) {
-        //                 case self::RULE_MATCH:
-        //                     $errors[0][1];
-        //                     break;
-        //                 case self::RULE_MIN:
-        //                      $errors[0][1];
-        //                     break;
-        //                 case self::RULE_REQUIRED:
-        //                     //echo json_encode( $errors[0][0]);
-        //                     $errors[0][0];
-        //                     break;
-        //                 case self::RULE_EMAIL:
-        //                     return $errors[0][1];
-        //                     break;
-        //             }
-        //      }
+    //     if( $errors)
+    //     {
+    //      foreach ($this->rules() as $k => $rules) {
+    //         foreach ($rules as $rule) {
+    //             $ruleName = $rule;
+    //             if (!is_string($ruleName)) {
+    //                 $this->ruleName = $rule[0];
+    //             }
+    //             switch ($ruleName) {
+    //                 case self::RULE_MATCH:
+    //                     $errors[0][1];
+    //                     break;
+    //                 case self::RULE_MIN:
+    //                      $errors[0][1];
+    //                     break;
+    //                 case self::RULE_REQUIRED:
+    //                     //echo json_encode( $errors[0][0]);
+    //                     $errors[0][0];
+    //                     break;
+    //                 case self::RULE_EMAIL:
+    //                     return $errors[0][1];
+    //                     break;
+    //             }
+    //      }
 
-        //          }
-        //     }
+    //          }
+    //     }
 
-        //    // var_dump($errors);
-        //    //  var_dump($errors);
-        //           var_dump($this->errors);
-    }
+    //    // var_dump($errors);
+    //    //  var_dump($errors);
+    //           var_dump($this->errors);
+    // }
 }

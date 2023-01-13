@@ -55,7 +55,10 @@ class SiteController
         }
 
         Application::$app->response->redirect('login');
-        Application::$app->session->setFlash('warning', 'Please Login to access this Page');
+        Application::$app->session->setFlash(
+            'warning',
+            'Please Login to access this Page'
+        );
     }
 
     public function profile()
@@ -65,6 +68,9 @@ class SiteController
             return Application::$app->router->renderView('profile');
         }
         Application::$app->response->redirect('login');
-        Application::$app->session->setFlash('warning', 'Please Login to access this Page');
+        Application::$app->session->setFlash(
+            'warning',
+            'Please Login to access this Page'
+        );
     }
 }

@@ -46,6 +46,7 @@ $(".register").on("click", function (e) {
     e.preventDefault();
     var formData = {
         name: $("#name").val(),
+        lastname: $("#lastname").val(),
         email: $("#email").val(),
         login: $("#login").val(),
         password: $("#password").val(),
@@ -68,6 +69,13 @@ $(".register").on("click", function (e) {
             } else {
                 $("#name").attr("class", "form-control is-valid");
                 $("#name_error").text("");
+            }
+            if (data.errors.lastname) {
+                $("#lastname").addClass(" is-invalid");
+                $("#lastname_error").text(data.errors.lastname);
+            } else {
+                $("#lastname").attr("class", "form-control is-valid");
+                $("#lastname_error").text("");
             }
             if (data.errors.email) {
                 $("#email").addClass("is-invalid");
@@ -108,4 +116,26 @@ $(".register").on("click", function (e) {
             }, 3000);
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
+

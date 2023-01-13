@@ -8,7 +8,8 @@ use app\core\Model;
 class User extends UserModel
 {
     public $name;
-    // public $email;
+    public $lastname;
+    public $email;
     public $login;
     public $password;
     public $confirm_password;
@@ -20,7 +21,8 @@ class User extends UserModel
         return [
             'id' => $id,
             'name' => $this->name,
-            // 'email' => $this->email,
+            'lastname' => $this->lastname,
+            'email' => $this->email,
             'login' => $this->login,
             'password' => password_hash($this->password, PASSWORD_DEFAULT),
         ];
@@ -47,18 +49,26 @@ class User extends UserModel
         return [
             'name' => [
                 self::RULE_REQUIRED,
+                self::RULE_SPACES,
                 self::RULE_ALPHABETICAL,
                 [self::RULE_MIN, 'min' => 2],
             ],
+            'lastname' => [
+                self::RULE_REQUIRED,
+                self::RULE_SPACES,
+                self::RULE_ALPHABETICAL,
+            ],
 
-            // 'email' => [self::RULE_REQUIRED, [self::RULE_UNIQUE, 'value'=>'email'],],
+           'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'value'=>'email'],],
             'login' => [
                 self::RULE_REQUIRED,
+                self::RULE_SPACES,
                 [self::RULE_UNIQUE, 'value' => 'login'],
                 [self::RULE_MIN, 'min' => 6],
             ],
             'password' => [
                 self::RULE_REQUIRED,
+                self::RULE_SPACES,
                 self::RULE_ALPHA_NUMERICAL,
                 [self::RULE_MIN, 'min' => 6],
             ],

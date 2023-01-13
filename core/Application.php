@@ -8,7 +8,6 @@ use app\core\Response;
 
 class Application
 {
-
     public ?array $user;
     public Router $router;
     public Cookie $cookie;
@@ -21,7 +20,7 @@ class Application
     public function __construct($config)
     {
         self::$app = $this;
-        $this->cookie = new cookie();
+        $this->cookie = new Cookie();
         $this->request = new Request();
         $this->session = new Session();
         $this->response = new Response();
@@ -44,7 +43,6 @@ class Application
 
     public function login(array $user)
     {
-        
         $this->user = $user;
         $userId = $user['id'];
         $this->session->set('user', $userId);

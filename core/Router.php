@@ -4,7 +4,7 @@ namespace app\core;
 
 class Router
 {
-    public  $title;
+    public $title;
     public Request $request;
     public Response $response;
     protected array $routes = [];
@@ -38,7 +38,7 @@ class Router
         if ($callback === false) {
             Application::$app->response->setStatusCode(404);
             return $this->renderView('_404');
-            exit;
+            exit();
         }
         if (is_string($callback)) {
             return $this->renderView($callback);

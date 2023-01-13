@@ -9,7 +9,7 @@
         use app\core\Application;
 
         if (Application::$app->user) {
-            echo '<h2> Welcome ' . Application::$app->user['name'] . '</h2>';
+            echo '<h2> Welcome ' . ucfirst(strtolower(Application::$app->user['name'] )) . '</h2>';
         }
         ?> 
           <p>Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
