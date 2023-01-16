@@ -12,7 +12,7 @@ class AuthController
 {
     public static array $data;
 
-    public function login()
+    public static function login()
     {
         $loginForm = new LoginForm();
         $loginForm->loadData(Application::$app->request->getData());
@@ -26,7 +26,7 @@ class AuthController
         echo json_encode(self::$data);
     }
 
-    public function register()
+    public static function register()
     {
         $user = new User();
         $user->loadData(Application::$app->request->getData());
@@ -40,7 +40,7 @@ class AuthController
         echo json_encode(self::$data);
     }
 
-    public function logout()
+    public static function logout()
     {
         Application::$app->logout();
         Application::$app->response->redirect('/');

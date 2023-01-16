@@ -5,7 +5,7 @@ namespace app\core;
 abstract class UserModel extends Model
 {
     abstract public function attributes(): array;
-    abstract public function getActiveUser($id): array;
+   
 
     public function save()
     {

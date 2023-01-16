@@ -9,25 +9,25 @@ use app\models\RegisterModel;
 
 class SiteController
 {
-    public function index()
+    public static function index()
     {
         Application::$app->router->title = 'Manao Home';
         return Application::$app->router->renderView('index');
     }
 
-    public function about()
+    public static function about()
     {
         Application::$app->router->title = 'About';
         return Application::$app->router->renderView('about');
     }
 
-    public function services()
+    public static function services()
     {
         Application::$app->router->title = 'services';
         return Application::$app->router->renderView('services');
     }
 
-    public function login()
+    public static function login()
     {
         Application::$app->router->title = 'Login';
         if (Application::$app->user) {
@@ -36,7 +36,7 @@ class SiteController
         return Application::$app->router->renderView('login');
     }
 
-    public function register()
+    public static function register()
     {
         Application::$app->router->title = 'Register';
         if (Application::$app->user) {
@@ -46,7 +46,7 @@ class SiteController
         return Application::$app->router->renderView('register');
     }
 
-    public function welcome()
+    public static function welcome()
     {
         Application::$app->router->title = 'Welcome';
 
@@ -61,7 +61,7 @@ class SiteController
         );
     }
 
-    public function profile()
+    public static function profile()
     {
         Application::$app->router->title = 'My Profile';
         if (Application::$app->user) {

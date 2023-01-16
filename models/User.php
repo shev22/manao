@@ -28,7 +28,7 @@ class User extends UserModel
         ];
     }
 
-    public function getActiveUser($id): array
+    public static function getActiveUser($id): array
     {
         $users = json_decode(
             file_get_contents(__DIR__ . '/../data.json'),
@@ -58,14 +58,14 @@ class User extends UserModel
                 self::RULE_SPACES,
                 self::RULE_ALPHABETICAL,
             ],
-
-           'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'value'=>'email'],],
             'login' => [
                 self::RULE_REQUIRED,
                 self::RULE_SPACES,
                 [self::RULE_UNIQUE, 'value' => 'login'],
                 [self::RULE_MIN, 'min' => 6],
             ],
+            
+           'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'value'=>'email'],],
             'password' => [
                 self::RULE_REQUIRED,
                 self::RULE_SPACES,
